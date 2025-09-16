@@ -1,0 +1,49 @@
+﻿@page "/register"
+
+@using System.ComponentModel.DataAnnotations
+
+@inject SessionState SessionState
+@inject NavigationManager Navigation
+
+<PageTitle>Register a new Atteendee for an Event</PageTitle>
+
+<div class="container mt-5">
+    <h1>Register for an Event</h1>
+
+    <EditForm Model="registrationModel" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <InputText id="name" class="form-control" @bind-Value="registrationModel.Name" />
+            <ValidationMessage For="@(() => registrationModel.Name)" />
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <InputText id="email" class="form-control" @bind-Value="registrationModel.Email" />
+            <ValidationMessage For="@(() => registrationModel.Email)" />
+        </div>
+
+        <div class="mb-3">
+            <label for="eventId" class="form-label">Event ID</label>
+            <InputNumber id="eventId" class="form-control" @bind-Value="registrationModel.EventId" />
+            <ValidationMessage For="@(() => registrationModel.EventId)" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Register</button>
+    </EditForm>
+</div>
+
+@code {
+    private RegistrationModel registrationModel = new();
+
+    private void HandleValidSubmit()
+    {
+        SessionState.RegisterForEvent(registrationModel.EventId, registrationModel.Name);
+
+        Console.WriteLine($"User registered: Name = {registrationModel.Name}, Email = {registrationModel.Email}, Event ID = {registrationModel.EventId}");
+        Navigation.NavigateTo($"/event/{registrationModel.EventId}"); // Redirect to the event details page
+    }
+}

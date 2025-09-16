@@ -1,0 +1,5 @@
+**/.vs/*
+**/bin/*
+**/publish/*
+**/obj/*
+**/*.csproj.user
